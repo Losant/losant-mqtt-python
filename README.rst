@@ -43,9 +43,10 @@ of a temperature sensor to the Losant platform.
     device.connect(blocking=False)
 
     # Send temperature once every second.
-    while true:
-        device.send_state({ "temperature": Analog.read() })
+    while True:
         device.loop()
+        if device.is_connected():
+            device.send_state({ "temperature": Analog.read() })
         time.sleep(0.5)
 
 
@@ -123,8 +124,8 @@ blocking
     If the connect method should block or not.  True is the default, which means that the connect
     call will be a blocking call that will not return until the connection is closed or an error
     occurs - all interaction has to be done through the various event callbacks.  If blocking is
-    set to False, the connect call will not block - but in this mode you must run the network loop
-    yourself, by calling the `loop`_ method periodically.
+    set to False, the function will only block until the connection is kicked off - after that point
+    you must run the network loop yourself, by calling the `loop`_ method periodically.
 
 is_connected
 ````````````
@@ -176,11 +177,14 @@ loop
 
 ::
 
-    loop()
+    loop(timeout=1)
 
 Loops the network stack for the connection.  Only valid to call when connected in non-blocking mode.
 Be sure to call this reasonably frequently when in that model to make sure the underlying
 MQTT connection does not get timed out.
+
+timeout
+    Max time to block on the socket before continuing - defaults to 1 second.
 
 add_event_observer
 ``````````````````

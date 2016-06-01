@@ -116,7 +116,7 @@ class Device(object):
         if blocking:
             self._mqtt_client.loop_forever()
 
-    def loop(self, timeout):
+    def loop(self, timeout=1):
         if self._mqtt_client:
             self._mqtt_client.loop(timeout)
 
@@ -124,10 +124,12 @@ class Device(object):
         if self._mqtt_client:
             self._mqtt_client.disconnect()
 
-    def send_state(self, state, time_like=time.time()):
+    def send_state(self, state, time_like=None):
         logger.debug("Sending state for %s", self._id)
         if not self._mqtt_client:
             return False
+        if not time_like:
+            time_like = int(time.time() * 1000)
         if isinstance(time_like, datetime.datetime):
             time_like = int((time.mktime(time_like.utctimetuple()) * 1000) + (time_like.microsecond / 1000))
         if isinstance(time_like, time.struct_time):
@@ -143,7 +145,7 @@ class Device(object):
     # Private functions
     # ============================================================
 
-    def _fire_event(self, event_name, data = None):
+    def _fire_event(self, event_name, data=None):
         if not event_name in self._observers:
             return
         for observer in self._observers[event_name]:
