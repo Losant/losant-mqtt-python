@@ -32,7 +32,7 @@ of a temperature sensor to the Losant platform.
     device = Device("my-device-id", "my-app-access-key", "my-app-access-secret")
 
     def onCommand(device, command):
-        print('Command received.')
+        print("Command received.")
         print(command["name"])
         print(command["payload"])
 

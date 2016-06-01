@@ -34,11 +34,11 @@ class TestDevice(unittest.TestCase):
         def onEvent(d):
             self.assertEqual(d, self.device)
             self.event_fired += 1
-        self.device.add_event_observer('test', onEvent)
-        self.device._fire_event('test')
+        self.device.add_event_observer("test", onEvent)
+        self.device._fire_event("test")
         self.assertEqual(self.event_fired, 1)
-        self.device.remove_event_observer('test', onEvent)
-        self.device._fire_event('test')
+        self.device.remove_event_observer("test", onEvent)
+        self.device._fire_event("test")
         self.assertEqual(self.event_fired, 1)
 
     def test_send_state(self):
@@ -58,7 +58,7 @@ class TestDevice(unittest.TestCase):
         def onCommand(d, msg):
             self.assertEqual(d, self.device)
             self.cmd_msg = msg
-        self.device.add_event_observer('command', onCommand)
+        self.device.add_event_observer("command", onCommand)
         self.device._client_command(None, None, MsgMock('{"name":"start","payload":{"one":[2,3]},"time":{"$date":"2016-06-01T01:09:51.145Z"}}'))
         self.assertEqual(self.cmd_msg["name"], "start")
         self.assertEqual(self.cmd_msg["payload"], { "one": [2, 3] })

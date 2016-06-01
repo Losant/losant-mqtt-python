@@ -29,33 +29,33 @@ def ext_json_decode(dct):
     if "$date" in dct:
         dtm = dct["$date"]
         # Parse offset
-        if dtm[-1] == 'Z':
+        if dtm[-1] == "Z":
             dt = dtm[:-1]
-            offset = 'Z'
-        elif dtm[-3] == ':':
+            offset = "Z"
+        elif dtm[-3] == ":":
             # (+|-)HH:MM
             dt = dtm[:-6]
             offset = dtm[-6:]
-        elif dtm[-5] in ('+', '-'):
+        elif dtm[-5] in ("+", "-"):
             # (+|-)HHMM
             dt = dtm[:-5]
             offset = dtm[-5:]
-        elif dtm[-3] in ('+', '-'):
+        elif dtm[-3] in ("+", "-"):
             # (+|-)HH
             dt = dtm[:-3]
             offset = dtm[-3:]
         else:
             dt = dtm
-            offset = ''
+            offset = ""
 
         aware = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f").replace(tzinfo=utc)
 
-        if not offset or offset == 'Z':
+        if not offset or offset == "Z":
             # UTC
             return aware
         else:
             if len(offset) == 6:
-                hours, minutes = offset[1:].split(':')
+                hours, minutes = offset[1:].split(":")
                 secs = (int(hours) * 3600 + int(minutes) * 60)
             elif len(offset) == 5:
                 secs = (int(offset[1:3]) * 3600 + int(offset[3:]) * 60)
