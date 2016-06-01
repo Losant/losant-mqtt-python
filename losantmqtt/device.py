@@ -186,7 +186,11 @@ class Device(object):
             self._mqtt_client.reconnect()
 
     def _client_command(self, client, userdata, msg):
-        logger.debug('Received command for %s', self._id)
-        payload = msg.payload.decode('utf-8')
+        logger.debug("Received command for %s", self._id)
+        payload = msg.payload
+        if not payload:
+            return
+        if hasattr(payload, "decode"):
+            payload = payload.decode("utf-8")
         msg = json.loads(payload, object_hook=ext_json_decode)
         self._fire_event("command", msg)
