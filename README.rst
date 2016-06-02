@@ -47,7 +47,7 @@ of a temperature sensor to the Losant platform.
         device.loop()
         if device.is_connected():
             device.send_state({ "temperature": Analog.read() })
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 API Documentation
