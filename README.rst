@@ -26,18 +26,17 @@ of a temperature sensor to the Losant platform.
 
     import time
     from losantmqtt import Device
-    from analog import Analog
 
     # Construct device
     device = Device("my-device-id", "my-app-access-key", "my-app-access-secret")
 
-    def onCommand(device, command):
+    def on_command(device, command):
         print("Command received.")
         print(command["name"])
         print(command["payload"])
 
     # Listen for commands.
-    device.add_event_observer("command", onCommand)
+    device.add_event_observer("command", on_command)
 
     # Connect to Losant.
     device.connect(blocking=False)
@@ -46,7 +45,8 @@ of a temperature sensor to the Losant platform.
     while True:
         device.loop()
         if device.is_connected():
-            device.send_state({ "temperature": Analog.read() })
+            temp = call_out_to_your_sensor_here()
+            device.send_state({ "temperature": temp })
         time.sleep(1)
 
 
