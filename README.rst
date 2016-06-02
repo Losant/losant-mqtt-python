@@ -84,11 +84,11 @@ constructor
 
 ::
 
-    Device(id, key, secret, secure=True)
+    Device(device_id, key, secret, secure=True)
 
 The ``Device()`` constructor takes the following arguments:
 
-id
+device_id
     The device's ID. Obtained by first registering a device using the Losant platform.
 
 key
