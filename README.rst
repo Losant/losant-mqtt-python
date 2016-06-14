@@ -5,8 +5,8 @@ The `Losant <https://www.losant.com>`_ MQTT client provides a simple way for
 custom things to communicate with the Losant platform over MQTT.  You can authenticate
 as a device, publish device state, and listen for device commands.
 
-This client works with both Python 2.7 and 3. It uses
- `Paho MQTT Client <https://github.com/eclipse/paho.mqtt.python>`_ under the
+This client works with both Python 2.7 and 3. It uses the
+`Paho MQTT Client <https://github.com/eclipse/paho.mqtt.python>`_ under the
 covers for the actual MQTT communication.
 
 Installation
