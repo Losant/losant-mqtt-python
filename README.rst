@@ -2,14 +2,18 @@ Losant Python MQTT Client
 =========================
 
 The `Losant <https://www.losant.com>`_ MQTT client provides a simple way for
-custom things to communicate with the Losant platform over MQTT.  The Losant MQTT
-client uses the `Paho MQTT Client <https://github.com/eclipse/paho.mqtt.python>`_
-for all underlying communication.
+custom things to communicate with the Losant platform over MQTT.  You can authenticate
+as a device, publish device state, and listen for device commands.
+
+This client works with both Python 2.7 and 3. It uses
+ `Paho MQTT Client <https://github.com/eclipse/paho.mqtt.python>`_ under the
+covers for the actual MQTT communication.
 
 Installation
 ------------
 
-The latest stable version is available in the Python Package Index (PyPi) and can be installed using
+The latest stable version is available in the Python Package Index (PyPi)
+and can be installed using
 
 ::
 
@@ -46,7 +50,7 @@ of a temperature sensor to the Losant platform.
         device.loop()
         if device.is_connected():
             temp = call_out_to_your_sensor_here()
-            device.send_state({ "temperature": temp })
+            device.send_state({"temperature": temp})
         time.sleep(1)
 
 
@@ -151,7 +155,7 @@ send_state
 
 ::
 
-    send_state(state, time_like=time.time())
+    send_state(state, time_like=None)
 
 Sends a device state to the Losant platform. In many scenarios, device states will
 change rapidly. For example a GPS device will report GPS coordinates once a second or
@@ -163,7 +167,7 @@ state
     The state to send as a Dict.
 
 time_like
-    When the state occured - defaults to now.
+    When the state occured - if None or not set, will default to now.
 
 Example
 .......
@@ -212,12 +216,12 @@ Example
 
 ::
 
-    def onCommand(device, cmd):
+    def on_command(device, cmd):
         print(cmd["time"]) # time of the command
         print(cmd["name"]) # name of the command
         print(cmd["payload"]) # payload of the command
 
-    device.add_event_observer("command", onCommand)
+    device.add_event_observer("command", on_command)
 
 remove_event_observer
 `````````````````````
