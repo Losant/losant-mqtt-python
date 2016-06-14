@@ -64,4 +64,4 @@ class TestDevice(unittest.TestCase):
         self.assertEqual(self.cmd_msg["name"], "start")
         self.assertEqual(self.cmd_msg["payload"], {"one": [2, 3]})
         self.assertEqual(self.cmd_msg["time"].microsecond, 145000)
-        self.assertEqual(time.mktime(self.cmd_msg["time"].utctimetuple()), 1464761391.0)
+        self.assertAlmostEqual(time.mktime(self.cmd_msg["time"].utctimetuple()), 1464761391.0)
