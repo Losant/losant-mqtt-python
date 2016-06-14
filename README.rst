@@ -1,6 +1,11 @@
 Losant Python MQTT Client
 =========================
 
+|travis-badge|_
+
+.. |travis-badge| image:: https://travis-ci.org/Losant/losant-mqtt-python.svg?branch=master
+.. _travis-badge: https://travis-ci.org/Losant/losant-mqtt-python
+
 The `Losant <https://www.losant.com>`_ MQTT client provides a simple way for
 custom things to communicate with the Losant platform over MQTT.  You can authenticate
 as a device, publish device state, and listen for device commands.
