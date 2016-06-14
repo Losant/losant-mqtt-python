@@ -7,6 +7,7 @@ device to the Losant platform.
 
 import time
 import datetime
+import calendar
 import json
 import logging
 import pkg_resources
@@ -161,10 +162,12 @@ class Device(object):
             return False
 
         if isinstance(time_like, datetime.datetime):
-            seconds = time.mktime(time_like.utctimetuple())
+            # getting utc tuple, and so use timegm
+            seconds = calendar.timegm(time_like.utctimetuple())
             millis = time_like.microsecond / 1000
             time_like = int(seconds * 1000 + millis)
         if isinstance(time_like, time.struct_time):
+            # don't know the timezone, assume it is local and use mktime
             time_like = int(time.mktime(time_like) * 1000)
         if not time_like:
             time_like = int(time.time() * 1000)

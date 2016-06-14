@@ -1,6 +1,6 @@
 # pylint: disable=C0111,W0212,R0903,W0201,C0301,E0401
 import unittest
-import time
+import calendar
 from losantmqtt import Device
 
 class MqttMock(object):
@@ -64,4 +64,4 @@ class TestDevice(unittest.TestCase):
         self.assertEqual(self.cmd_msg["name"], "start")
         self.assertEqual(self.cmd_msg["payload"], {"one": [2, 3]})
         self.assertEqual(self.cmd_msg["time"].microsecond, 145000)
-        self.assertEqual(str(time.mktime(self.cmd_msg["time"].utctimetuple())), "1464761391.0")
+        self.assertEqual(calendar.timegm(self.cmd_msg["time"].utctimetuple()), 1464743391.0)
