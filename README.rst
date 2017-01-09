@@ -247,6 +247,6 @@ observer
     Callback method to remove.
 
 
-Copyright (c) 2016 Losant IoT, Inc
+Copyright (c) 2017 Losant IoT, Inc
 
 https://www.losant.com
