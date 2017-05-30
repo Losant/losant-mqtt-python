@@ -35,6 +35,7 @@ import calendar
 import json
 import logging
 import pkg_resources
+import socket
 # pylint: disable=E0401
 from paho.mqtt import client as mqtt
 
@@ -121,6 +122,7 @@ class Device(object):
         self._mqtt_client = None
         self._observers = {}
         self._initial_connect = False
+        self._looping = False
 
     def add_event_observer(self, event_name, observer):
         """ Add an observer callback to an event.
@@ -140,7 +142,7 @@ class Device(object):
     def is_connected(self):
         """ Returns if the client is currently connected to Losant """
         # pylint: disable=W0212
-        return self._mqtt_client._state == mqtt.mqtt_cs_connected
+        return self._mqtt_client and self._mqtt_client._state == mqtt.mqtt_cs_connected
 
     def connect(self, blocking=True):
         """ Attempts to establish a connection to Losant.
@@ -152,6 +154,7 @@ class Device(object):
         if self._mqtt_client:
             return
 
+        self._looping = blocking
         self._initial_connect = True
         self._mqtt_client = mqtt.Client(self._device_id)
         self._mqtt_client.username_pw_set(self._key, self._secret)
@@ -166,13 +169,20 @@ class Device(object):
         self._mqtt_client.on_disconnect = self._cb_client_disconnect
         self._mqtt_client.message_callback_add(self._command_topic(), self._cb_client_command)
         self._mqtt_client.connect(Device.mqtt_endpoint, port, 15)
-        if blocking:
+        if self._looping:
             self._mqtt_client.loop_forever()
 
     def loop(self, timeout=1):
         """ Performs network activity when connected in non blocking mode """
+        if self._looping:
+            raise Exception("Connection in blocking mode, don't call loop")
+
         if self._mqtt_client:
-            self._mqtt_client.loop(timeout)
+            result = self._mqtt_client.loop(timeout)
+            if result != mqtt.MQTT_ERR_SUCCESS:
+                LOGGER.debug("Attempting another reconnect for %s...", self._device_id)
+                self._wrapped_reconnect()
+
 
     def close(self):
         """ Closes the connection to Losant """
@@ -226,10 +236,10 @@ class Device(object):
             self._mqtt_client.subscribe(self._command_topic())
             if self._initial_connect:
                 self._initial_connect = False
-                LOGGER.debug("%s sucessfully connected", self._device_id)
+                LOGGER.debug("%s successfully connected", self._device_id)
                 self._fire_event("connect")
             else:
-                LOGGER.debug("%s sucessfully reconnected", self._device_id)
+                LOGGER.debug("%s successfully reconnected", self._device_id)
                 self._fire_event("reconnect")
             return
 
@@ -239,7 +249,7 @@ class Device(object):
             raise Exception("Invalid Losant credentials - error code {0}".format(response_code))
         else:
             LOGGER.debug("%s retrying connection", self._device_id)
-            self._mqtt_client.reconnect()
+            self._wrapped_reconnect()
 
     def _cb_client_disconnect(self, client, userdata, response_code):
         if not self._mqtt_client:
@@ -250,7 +260,7 @@ class Device(object):
             self._fire_event("close")
         else:
             LOGGER.debug("Connection abnormally ended for %s, reconnecting...", self._device_id)
-            self._mqtt_client.reconnect()
+            self._wrapped_reconnect()
 
     def _cb_client_command(self, client, userdata, msg):
         LOGGER.debug("Received command for %s", self._device_id)
@@ -261,3 +271,11 @@ class Device(object):
             payload = payload.decode("utf-8")
         msg = json.loads(payload, object_hook=ext_json_decode)
         self._fire_event("command", msg)
+
+    def _wrapped_reconnect(self):
+        # no need to trigger a reconnect ourselves if loop_forever is active
+        if not self._looping:
+            try:
+                self._mqtt_client.reconnect()
+            except socket.error as err:
+                LOGGER.debug("Reconnect attempt failed for %s due to %s", self._device_id, err)
