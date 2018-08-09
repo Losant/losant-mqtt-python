@@ -158,7 +158,6 @@ class Device(object):
         self._looping = blocking
         self._initial_connect = True
         self._mqtt_client = mqtt.Client(self._device_id, transport=self._transport)
-        self._mqtt_client.enable_logger()
         self._mqtt_client.username_pw_set(self._key, self._secret)
 
         port = 80 if self._transport == "websockets" else 1883
