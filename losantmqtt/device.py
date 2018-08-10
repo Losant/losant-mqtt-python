@@ -169,7 +169,7 @@ class Device(object):
         self._mqtt_client.on_connect = self._cb_client_connect
         self._mqtt_client.on_disconnect = self._cb_client_disconnect
         self._mqtt_client.message_callback_add(self._command_topic(), self._cb_client_command)
-        self._mqtt_client.connect(Device.mqtt_endpoint, 8883, 15)
+        self._mqtt_client.connect(Device.mqtt_endpoint, port, 15)
         if self._looping:
             self._mqtt_client.loop_forever()
 
