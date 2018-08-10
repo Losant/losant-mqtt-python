@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='losant-mqtt',
-    version='1.0.1',
+    version='1.1.0',
     description='An MQTT client for Losant',
     long_description=long_description,
     url='https://github.com/Losant/losant-mqtt-python',
@@ -38,5 +38,5 @@ setup(
     },
     keywords=["MQTT", "Losant", "IoT"],
     test_suite='tests',
-    install_requires=['paho-mqtt>=1,<2']
+    install_requires=['paho-mqtt>=1.2,<2']
 )

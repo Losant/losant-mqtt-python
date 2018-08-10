@@ -96,7 +96,7 @@ constructor
 
 ::
 
-    Device(device_id, key, secret, secure=True)
+    Device(device_id, key, secret, secure=True, transport="tcp")
 
 The ``Device()`` constructor takes the following arguments:
 
@@ -112,6 +112,10 @@ secret
 secure
     If the client should connect to Losant over SSL - default is true.
 
+transport
+    Allowed values are "tcp" and "websockets". Defaults to "tcp", which is a raw TCP connection over
+    ports 1883 (insecure) or 8883 (secure). When "websockets" is passed in, connects using MQTT over
+    WebSockets, which uses either port 80 (insecure) or port 443 (secure).
 
 Example
 .......
@@ -130,7 +134,7 @@ connect
     connect(blocking=True)
 
 Connects the device to the Losant platform. Hook the connect event to know when a connection
-has been successfully established.  Connect takes the following argumments:
+has been successfully established.  Connect takes the following arguments:
 
 blocking
     If the connect method should block or not.  True is the default, which means that the connect
@@ -175,7 +179,7 @@ state
     The state to send as a Dict.
 
 time_like
-    When the state occured - if None or not set, will default to now.
+    When the state occurred - if None or not set, will default to now.
 
 Example
 .......
@@ -247,6 +251,6 @@ observer
     Callback method to remove.
 
 
-Copyright (c) 2017 Losant IoT, Inc
+Copyright (c) 2018 Losant IoT, Inc
 
 https://www.losant.com

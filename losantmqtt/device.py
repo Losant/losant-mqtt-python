@@ -1,7 +1,7 @@
 """
 The MIT License (MIT)
 
-Copyright (c) 2017 Losant IoT, Inc.
+Copyright (c) 2018 Losant IoT, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -113,11 +113,12 @@ class Device(object):
 
     mqtt_endpoint = "broker.losant.com"
 
-    def __init__(self, device_id, key, secret, secure=True):
+    def __init__(self, device_id, key, secret, secure=True, transport="tcp"):
         self._device_id = device_id
         self._key = key
         self._secret = secret
         self._secure = secure
+        self._transport = transport
 
         self._mqtt_client = None
         self._observers = {}
@@ -156,13 +157,13 @@ class Device(object):
 
         self._looping = blocking
         self._initial_connect = True
-        self._mqtt_client = mqtt.Client(self._device_id)
+        self._mqtt_client = mqtt.Client(self._device_id, transport=self._transport)
         self._mqtt_client.username_pw_set(self._key, self._secret)
 
-        port = 1883
+        port = 80 if self._transport == "websockets" else 1883
         if self._secure:
             self._mqtt_client.tls_set(ROOT_CA_PATH)
-            port = 8883
+            port = 443 if self._transport == "websockets" else 8883
 
         LOGGER.debug("Connecting to Losant as %s", self._device_id)
         self._mqtt_client.on_connect = self._cb_client_connect
