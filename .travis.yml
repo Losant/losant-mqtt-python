@@ -3,10 +3,6 @@ matrix:
   include:
   - name: "Python: 2.7"
     python: "2.7"
-  - name: "Python: 3.2"
-    python: "3.2"
-  - name: "Python: 3.3"
-    python: "3.3"
   - name: "Python: 3.4"
     python: "3.4"
   - name: "Python: 3.5"
