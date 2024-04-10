@@ -4,7 +4,7 @@ Losant Python MQTT Client
 |travis-badge|_ |pypi-badge|_
 
 .. |travis-badge| image:: https://travis-ci.com/Losant/losant-mqtt-python.svg?branch=master
-.. _travis-badge:  https://travis-ci.com/Losant/losant-mqtt-python
+.. _travis-badge:  https://app.travis-ci.com/github/Losant/losant-mqtt-python
 
 .. |pypi-badge| image:: https://badge.fury.io/py/losant-mqtt.svg
 .. _pypi-badge: https://badge.fury.io/py/losant-mqtt
