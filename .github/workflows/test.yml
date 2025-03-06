@@ -1,0 +1,30 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        python: [ '3.11', '3.10', '3.9', '3.8' ]
+    runs-on: 'ubuntu-latest'
+    permissions:
+      actions: write
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install deps
+      run: pip install --upgrade --force-reinstall pip
+    - name: Run tests
+      run: python setup.py test
