@@ -4,6 +4,7 @@
 
 ### Changed
 
+* Relicensed from MIT to Apache License 2.0.
 * Upgraded paho-mqtt from 1.x to 2.x (`>=2.0.0,<3`), using the v2 callback API.
 * Raised minimum supported Python version to 3.11.
 * Migrated packaging from `setup.py` to `pyproject.toml` and uv.
