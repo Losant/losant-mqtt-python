@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "losant-mqtt"
+version = "2.0.0"
+description = "An MQTT client for Losant"
+readme = "README.rst"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "SUSE", email = "hello@losant.com" }]
+requires-python = ">=3.11"
+keywords = ["MQTT", "Losant", "IoT"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Topic :: Communications",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = ["paho-mqtt>=2.0.0,<3"]
+
+[project.urls]
+Homepage = "https://github.com/Losant/losant-mqtt-python"
+
+[dependency-groups]
+dev = ["ruff"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+losantmqtt = ["RootCA.crt", "py.typed"]
