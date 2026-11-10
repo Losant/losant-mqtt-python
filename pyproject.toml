@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,8 +7,9 @@ name = "losant-mqtt"
 version = "2.0.0"
 description = "An MQTT client for Losant"
 readme = "README.rst"
-license = { text = "MIT" }
-authors = [{ name = "Losant", email = "hello@losant.com" }]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "SUSE", email = "hello@losant.com" }]
 requires-python = ">=3.11"
 keywords = ["MQTT", "Losant", "IoT"]
 classifiers = [
@@ -20,7 +21,6 @@ classifiers = [
     "Topic :: Communications",
     "Topic :: Internet",
     "Topic :: Software Development :: Libraries",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
